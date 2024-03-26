@@ -54,27 +54,29 @@ const App = () => {
         onClick={increaseBad}
         text='Bad'
       /> 
-      <Statistics text="Good" value={good}></Statistics>
-      <Statistics text="Neutral" value={neutral}></Statistics> 
-      <Statistics text="Bad" value={bad}></Statistics>
-      <Statistics text="Average" value={average}></Statistics>
-      <Total total={total} positive={positive}></Total>          
+      <Statistics good={good} neutral={neutral} bad={bad} average={average} positive={positive}></Statistics>      
     </div>
   )
 }
 
-const Statistics = ({text, value}) => {
-  return (<div>
-    <p>{text} {value}</p>
-  </div>);
-}
+const Statistics = ({good, neutral, bad, average, positive}) => {
+  if (good == 0 && neutral == 0 && bad == 0){
+    return (<div>
+      No feedback given
+    </div>)
+  }
+  return (
+    <div>
+       <p>Good {good}</p>
+       <p>Neutral {neutral}</p>
+       <p>Bad {bad}</p>
+       <p>All {good + neutral + bad}</p>
+       <p>Average {average}</p>
+       <p>Positive {positive}%</p>
+  
+    </div>
+  )
 
-const Total = ({total, positive}) =>{
-
-  return (<div>
-    <p>All: {total}</p>
-    <p>Positive {positive}%</p>
-  </div>)
 }
 
 const Button = (props) => {
