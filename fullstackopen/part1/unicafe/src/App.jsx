@@ -59,6 +59,12 @@ const App = () => {
   )
 }
 
+const StatisticsTable = ({text, value}) => {
+  return (<tr>
+    <td>{text} {value}</td>
+  </tr>)
+}
+
 const StatisticsLine = ({text, value}) =>{
   return (<div>
     <p>{text} {value}</p>
@@ -73,11 +79,15 @@ const Statistics = ({good, neutral, bad, average, positive}) => {
   }
   return (
     <div>
-      <StatisticsLine text={"Good"} value={good}></StatisticsLine>
-      <StatisticsLine text={"Neutral"} value={neutral}></StatisticsLine>
-      <StatisticsLine text={"Bad"} value={bad}></StatisticsLine>
-      <StatisticsLine text={"Average"} value={average}></StatisticsLine>
-      <StatisticsLine text={"Positive"} value={positive}></StatisticsLine>
+      <table>
+        <tbody>
+          <StatisticsTable text={"Good"} value={good}></StatisticsTable>
+          <StatisticsTable text={"Neutral"} value={neutral}></StatisticsTable>
+          <StatisticsTable text={"Bad"} value={bad}></StatisticsTable>
+          <StatisticsTable text={"Average"} value={average}></StatisticsTable>
+          <StatisticsTable text={"Positive"} value={positive}></StatisticsTable>
+        </tbody>
+      </table>
     </div>
   )
 
