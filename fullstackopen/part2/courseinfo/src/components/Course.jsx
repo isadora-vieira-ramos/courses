@@ -9,5 +9,4 @@ const Course = ({course}) =>{
         </div>
     );
 }
-
 export default Course;
