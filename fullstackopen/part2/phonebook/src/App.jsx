@@ -2,16 +2,18 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone:''}
+    { name: 'Arto Hellas', phone:'', id: 1}
   ]) 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [newSearch, setNewSearch] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
     const newPerson = {
       name: newName, 
-      phone: newPhone
+      phone: newPhone,
+      id: persons.length + 1
     };
     const exists = persons.filter(person => person.name === newName);
     console.log(exists.length)
@@ -34,9 +36,23 @@ const App = () => {
     setNewPhone(event.target.value)
   }
 
+  const handleSearchChange = (event) => {
+    console.log(event.target.value)
+    setNewSearch(event.target.value)
+    console.log(filteredPhone)
+  }
+
+  const filteredPhone = 
+    newSearch.length >= 1? 
+    persons.filter(x => x.name.toLowerCase().includes(newSearch.toLowerCase())) :
+    persons;
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <input value={newSearch} 
+        onChange={handleSearchChange} 
+        placeholder='Pesquise na lista'></input>
       <form onSubmit={addName}>
         <div>
           Name: <input value={newName} onChange={handleNameChange}/>
@@ -50,7 +66,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map(person => 
+        {filteredPhone.map(person => 
           <p key={person.name}>{person.name} - {person.phone}</p>
         )}
       </div>
