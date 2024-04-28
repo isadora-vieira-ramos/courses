@@ -88,17 +88,11 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter handleSearchChange={handleSearchChange} value={newSearch}></Filter>
-      <form onSubmit={addName}>
-        <div>
-          Name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          Number: <input value={newPhone} onChange={handlePhoneChange} />
-        </div>
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
+      <PersonForm addName={addName}
+                  newName={newName}
+                  newPhone={newPhone}
+                  handleNameChange={handleNameChange}
+                  handlePhoneChange={handlePhoneChange}></PersonForm>     
       <h2>Numbers</h2>
       <div>
         {filteredPhone.map(person => 
