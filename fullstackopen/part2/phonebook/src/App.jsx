@@ -61,8 +61,8 @@ const App = () => {
       number: newPhone,
       id: persons.length + 1
     };
-    const exists = persons.filter(person => person.name === newName);
-    if(exists.length === 0){
+    const userExists = persons.filter(person => person.name === newName);
+    if(userExists.length === 0){
       phonebookService
         .create(newPerson)
         .then(returnedPerson =>{
@@ -71,24 +71,30 @@ const App = () => {
           setNewPhone('')
         })
     }else{
-      alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        const updatedUser = {...userExists[0], number:newPhone}
+        phonebookService
+          .update(updatedUser.id, updatedUser)
+          .then(response=>{
+            phonebookService.getAll().then(responseGet =>{
+              setPersons(responseGet)
+            })
+            window.alert("Phone changed!")
+          })
+      }
     }
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
   const handlePhoneChange = (event) => {
-    console.log(event.target.value)
     setNewPhone(event.target.value)
   }
 
   const handleSearchChange = (event) => {
-    console.log(event.target.value)
     setNewSearch(event.target.value)
-    console.log(filteredPhone)
   }
 
   const deletePhone = (id) =>{
