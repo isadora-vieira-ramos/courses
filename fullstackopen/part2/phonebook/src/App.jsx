@@ -31,10 +31,10 @@ const PersonForm = (props) => {
 }
 
 const Person = (props) => {
-  const {person} = props;
+  const {person, deletePhone} = props;
   return (
     <>
-      <p key={person.id}>{person.name} - {person.number}</p>
+      <p key={person.id}>{person.name} - {person.number} <button onClick={deletePhone}>Delete</button></p>
     </>
   );
 }
@@ -46,10 +46,10 @@ const App = () => {
   const [newSearch, setNewSearch] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    phonebookService
+      .getAll()
       .then(response => {
-        setPersons(response.data)
+        setPersons(response)
       })
   }, [])
 
@@ -91,6 +91,18 @@ const App = () => {
     console.log(filteredPhone)
   }
 
+  const deletePhone = (id) =>{
+    if(window.confirm("Are you sure you want to delete?")){
+      phonebookService
+        .remove(id)
+        .then(response =>{
+          phonebookService.getAll().then(responseGet =>{
+            setPersons(responseGet)
+          })
+        })
+    }
+  }
+
   const filteredPhone = 
     newSearch.length >= 1? 
     persons.filter(x => x.name.toLowerCase().includes(newSearch.toLowerCase())) :
@@ -108,7 +120,7 @@ const App = () => {
       <h2>Numbers</h2>
       <div>
         {filteredPhone.map(person => 
-          <Person key={person.id} person={person}></Person>
+          <Person key={person.id} person={person} deletePhone={()=> deletePhone(person.id)}></Person>
         )}
       </div>
     </div>
