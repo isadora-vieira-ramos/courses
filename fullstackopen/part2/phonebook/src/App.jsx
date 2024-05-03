@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const Filter = (props) => {
   const {newSearch, handleSearchChange} = props;
@@ -57,15 +58,18 @@ const App = () => {
     event.preventDefault()
     const newPerson = {
       name: newName, 
-      phone: newPhone,
+      number: newPhone,
       id: persons.length + 1
     };
     const exists = persons.filter(person => person.name === newName);
-    console.log(exists.length)
     if(exists.length === 0){
-      setPersons(persons.concat(newPerson))
-      setNewName('')
-      setNewPhone('')
+      phonebookService
+        .create(newPerson)
+        .then(returnedPerson =>{
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewPhone('')
+        })
     }else{
       alert(`${newName} is already added to phonebook`)
     }
