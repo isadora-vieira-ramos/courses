@@ -1,0 +1,12 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "Full Stack Open Part 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Isadora Ramos",
+  "license": "MIT"
+}
