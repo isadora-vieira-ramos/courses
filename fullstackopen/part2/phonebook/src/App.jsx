@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newSearch, setNewSearch] = useState('')
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     phonebookService
@@ -80,6 +81,14 @@ const App = () => {
             setPersons(responseGet)
           })
         })
+        .catch(error=> {
+          setError(true)
+          setNotification(`This information has already been deleted, try refresh the page`)
+            setTimeout(() => {
+              setNotification(null)
+              setError(false)
+            }, 5000)
+        })
     }
   }
 
@@ -91,7 +100,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification}></Notification>
+      <Notification message={notification} error={error}></Notification>
       <Filter handleSearchChange={handleSearchChange} value={newSearch}></Filter>
       <PersonForm addName={addName}
                   newName={newName}
