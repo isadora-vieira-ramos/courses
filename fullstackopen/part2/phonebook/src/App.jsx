@@ -1,49 +1,16 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import phonebookService from './services/phonebook'
-
-const Filter = (props) => {
-  const {newSearch, handleSearchChange} = props;
-  return (
-    <>
-      <input value={newSearch} 
-        onChange={handleSearchChange} 
-        placeholder='Pesquise na lista'></input>
-    </>
-  );
-}
-
-const PersonForm = (props) => {
-  const {addName, newName, newPhone, handleNameChange, handlePhoneChange} = props;
-  return (
-    <form onSubmit={addName}>
-        <div>
-          Name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          Number: <input value={newPhone} onChange={handlePhoneChange} />
-        </div>
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
-  );
-}
-
-const Person = (props) => {
-  const {person, deletePhone} = props;
-  return (
-    <>
-      <p key={person.id}>{person.name} - {person.number} <button onClick={deletePhone}>Delete</button></p>
-    </>
-  );
-}
+import Notification from './components/Notification';
+import Filter from './components/Filter';
+import Person from './components/Person';
+import PersonForm from './components/PersonForm';
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     phonebookService
@@ -59,13 +26,17 @@ const App = () => {
     const newPerson = {
       name: newName, 
       number: newPhone,
-      id: persons.length + 1
+      id: `${persons.length + 1}`
     };
     const userExists = persons.filter(person => person.name === newName);
     if(userExists.length === 0){
       phonebookService
         .create(newPerson)
         .then(returnedPerson =>{
+          setNotification(`Added '${newPerson.name}'`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewPhone('')
@@ -79,7 +50,10 @@ const App = () => {
             phonebookService.getAll().then(responseGet =>{
               setPersons(responseGet)
             })
-            window.alert("Phone changed!")
+            setNotification(`Changed '${newPerson.name}'`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
           })
       }
     }
@@ -117,6 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification}></Notification>
       <Filter handleSearchChange={handleSearchChange} value={newSearch}></Filter>
       <PersonForm addName={addName}
                   newName={newName}
