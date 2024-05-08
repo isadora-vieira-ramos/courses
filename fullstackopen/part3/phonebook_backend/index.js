@@ -1,6 +1,7 @@
 const http = require('http')
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let people = [
     { 
@@ -27,6 +28,33 @@ let people = [
 
 app.get('/api/persons', (request, response) => {
   response.json(people)
+})
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  const name = people.find(person => person.name.toUpperCase() == body.name.toUpperCase())
+
+  if (!body || !body.number || !body.name) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  if(name){
+    return response.status(400).json({ 
+      error: 'name must be unique' 
+    })
+  }
+
+  const person = {
+    id: Math.floor(Math.random() * 10000),
+    number: body.number,
+    name: body.name,
+  }
+
+  people = people.concat(person)
+
+  response.json(person)
 })
 
 app.get('/api/persons/:id', (request, response) =>{
