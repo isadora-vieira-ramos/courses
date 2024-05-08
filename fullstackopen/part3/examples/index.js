@@ -1,10 +1,8 @@
 const http = require('http')
 const express = require('express')
-const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
-app.use(morgan('tiny'))
 
 let notes = [
   {
@@ -23,10 +21,6 @@ let notes = [
     important: true
   }
 ]
-
-morgan.token('host', function(req, res) {
-    return req.hostname;
-});
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
