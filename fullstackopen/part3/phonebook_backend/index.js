@@ -46,6 +46,12 @@ app.get('/api/info', (request, response) => {
   response.send(`<p>Phonebook has info for ${count} people</p></br><p>${date}</p>`)
 })
 
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  people = persons.filter(people => people.id !== id)
+
+  response.status(204).end()
+})
 
 const PORT = 3001
 app.listen(PORT, () => {
