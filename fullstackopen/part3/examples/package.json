@@ -4,16 +4,18 @@
   "description": "Full Stack Open Part 3",
   "main": "index.js",
   "scripts": {
-    "dev":"nodemon index.js", 
+    "dev": "nodemon index.js",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Isadora Ramos",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.7",
     "nodemon": "^3.1.0"
   }
 }
