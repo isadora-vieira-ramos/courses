@@ -1,10 +1,12 @@
 const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 app.use(express.json())
 app.use(morgan('tiny'))
+app.use(cors())
 
 let people = [
     { 
@@ -86,7 +88,7 @@ app.get('/api/info', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  people = persons.filter(people => people.id !== id)
+  people = people.filter(people => people.id !== id)
 
   response.status(204).end()
 })
