@@ -1,0 +1,25 @@
+# fly.toml app configuration file generated for phonebook-backend-fullstacko-cool-breeze-7852 on 2024-05-16T08:32:16-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'phonebook-backend-fullstacko-cool-breeze-7852'
+primary_region = 'gig'
+
+[build]
+
+[env]
+  PORT = '3000'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
