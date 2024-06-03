@@ -25,56 +25,36 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
-// app.post('/api/persons', (request, response) => {
-//   const body = request.body
-//   const name = people.find(person => person.name.toUpperCase() == body.name.toUpperCase())
+app.post('/api/persons', (request, response) => {
+  const body = request.body
 
-//   if (!body || !body.number || !body.name) {
-//     return response.status(400).json({ 
-//       error: 'content missing' 
-//     })
-//   }
+  if (!body || !body.number || !body.name) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
 
-//   if(name){
-//     return response.status(400).json({ 
-//       error: 'name must be unique' 
-//     })
-//   }
+  const person = new Person({
+    number: body.number,
+    name: body.name,
+  });
 
-//   const person = {
-//     id: Math.floor(Math.random() * 10000),
-//     number: body.number,
-//     name: body.name,
-//   }
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+})
 
-//   people = people.concat(person)
+app.get('/api/persons/:id', (request, response) =>{
+  Person.findById(request.params.id).then(note => {
+    response.json(note)
+  })
+})
 
-//   response.json(person)
-// })
-
-// app.get('/api/persons/:id', (request, response) =>{
-//     const id = Number(request.params.id);
-//     const person = people.find(person => person.id == id);
-
-//     if (person) {
-//         response.json(person)
-//     } else {
-//         response.status(404).end()
-//     }
-// })
-
-// app.get('/api/info', (request, response) => {
-//   const count = people.length;
-//   const date = new Date();
-//   response.send(`<p>Phonebook has info for ${count} people</p></br><p>${date}</p>`)
-// })
-
-// app.delete('/api/persons/:id', (request, response) => {
-//   const id = Number(request.params.id)
-//   people = people.filter(people => people.id !== id)
-
-//   response.status(204).end()
-// })
+app.get('/api/info', async (request, response) => {
+  const count = await Person.collection.countDocuments();
+  const date = new Date();
+  response.send(`<p>Phonebook has info for ${count} people</p></br><p>${date}</p>`)
+})
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
