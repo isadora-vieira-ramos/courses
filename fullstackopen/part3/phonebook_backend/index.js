@@ -44,10 +44,14 @@ app.post('/api/persons', (request, response) => {
   })
 })
 
-app.get('/api/persons/:id', (request, response) =>{
+app.get('/api/persons/:id', (request, response, next) =>{
   Person.findById(request.params.id).then(note => {
-    response.json(note)
-  })
+    if(note){
+      response.json(note)
+    }else{
+      response.status(404).end()
+    }
+  }).catch(error => next(error))
 })
 
 app.get('/api/info', async (request, response) => {
@@ -55,6 +59,32 @@ app.get('/api/info', async (request, response) => {
   const date = new Date();
   response.send(`<p>Phonebook has info for ${count} people</p></br><p>${date}</p>`)
 })
+
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndDelete(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint'})
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id'})
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
