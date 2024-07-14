@@ -2,11 +2,16 @@ const PersonForm = (props) => {
   const {addName, newName, newPhone, handleNameChange, handlePhoneChange} = props;
   return (
     <form onSubmit={addName}>
+        <h3>Add New Person</h3>
         <div>
-          Name: <input value={newName} onChange={handleNameChange}/>
+          <input placeholder="Name"
+           value={newName} onChange={handleNameChange}
+           style={{width:'100%', marginBottom:'10px', padding: '6px 10px', boxSizing: 'border-box'}}/>
         </div>
         <div>
-          Number: <input value={newPhone} onChange={handlePhoneChange} />
+          <input placeholder="Phone" 
+          value={newPhone} onChange={handlePhoneChange} 
+          style={{width:'100%', marginBottom:'10px', padding: '6px 10px', boxSizing: 'border-box'}}/>
         </div>
         <div>
           <button type="submit">Add</button>

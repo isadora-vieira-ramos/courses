@@ -98,16 +98,16 @@ const App = () => {
     persons;
 
   return (
-    <div>
+    <div style={{paddingLeft: '50px'}}>
       <h2>Phonebook</h2>
       <Notification message={notification} error={error}></Notification>
-      <Filter handleSearchChange={handleSearchChange} value={newSearch}></Filter>
       <PersonForm addName={addName}
                   newName={newName}
                   newPhone={newPhone}
                   handleNameChange={handleNameChange}
                   handlePhoneChange={handlePhoneChange}></PersonForm>     
-      <h2>Numbers</h2>
+      <h3>Numbers</h3>
+      <Filter handleSearchChange={handleSearchChange} value={newSearch}></Filter>
       <div>
         {filteredPhone.map(person => 
           <Person key={person.id} person={person} deletePhone={()=> deletePhone(person.id)}></Person>

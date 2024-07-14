@@ -3,8 +3,9 @@ const Filter = (props) => {
   return (
     <>
       <input value={newSearch} 
+        style={{width:'100%', padding: '6px 10px', boxSizing: 'border-box'}}
         onChange={handleSearchChange} 
-        placeholder='Pesquise na lista'></input>
+        placeholder='Search on list'></input>
     </>
   );
 }
