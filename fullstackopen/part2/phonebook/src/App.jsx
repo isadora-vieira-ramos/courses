@@ -14,50 +14,50 @@ const App = () => {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    phonebookService
-      .getAll()
+    phonebookService.getAllContacts()
       .then(response => {
         setPersons(response)
       })
   }, [])
 
 
-  const addName = (event) => {
+  const addContact = (event) => {
     event.preventDefault()
     const newPerson = {
       name: newName, 
       number: newPhone,
       id: `${persons.length + 1}`
     };
-    const userExists = persons.filter(person => person.name === newName);
-    if(userExists.length === 0){
+    const filterListByName = persons.filter(person => person.name === newName);
+    if(filterListByName.length === 0){
       phonebookService
-        .create(newPerson)
+        .createContact(newPerson)
         .then(returnedPerson =>{
-          setNotification(`Added '${newPerson.name}'`)
-          setTimeout(() => {
-            setNotification(null)
-          }, 5000)
+          showNotification(`Added '${newPerson.name}'`)
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewPhone('')
         })
     }else{
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
-        const updatedUser = {...userExists[0], number:newPhone}
+        const updatedUser = {...filterListByName[0], number:newPhone}
         phonebookService
-          .update(updatedUser.id, updatedUser)
+          .updateContact(updatedUser.id, updatedUser)
           .then(response=>{
-            phonebookService.getAll().then(responseGet =>{
+            phonebookService.getAllContacts().then(responseGet =>{
               setPersons(responseGet)
             })
-            setNotification(`Changed '${newPerson.name}'`)
-            setTimeout(() => {
-              setNotification(null)
-            }, 5000)
+            showNotification(`Changed '${newPerson.name}'`)
           })
       }
     }
+  }
+
+  const showNotification = (notification) => {
+    setNotification(notification)
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   const handleNameChange = (event) => {
@@ -72,18 +72,18 @@ const App = () => {
     setNewSearch(event.target.value)
   }
 
-  const deletePhone = (id) =>{
+  const deleteContact = (id) =>{
     if(window.confirm("Are you sure you want to delete?")){
       phonebookService
-        .remove(id)
+        .removeContact(id)
         .then(response =>{
-          phonebookService.getAll().then(responseGet =>{
+          phonebookService.getAllContacts().then(responseGet =>{
             setPersons(responseGet)
           })
         })
         .catch(error=> {
           setError(true)
-          setNotification(`This information has already been deleted, try refresh the page`)
+          showNotification(`This information has already been deleted, try refresh the page`)
             setTimeout(() => {
               setNotification(null)
               setError(false)
@@ -101,7 +101,7 @@ const App = () => {
     <div style={{paddingLeft: '50px'}}>
       <h2>Phonebook</h2>
       <Notification message={notification} error={error}></Notification>
-      <PersonForm addName={addName}
+      <PersonForm addName={addContact}
                   newName={newName}
                   newPhone={newPhone}
                   handleNameChange={handleNameChange}
@@ -110,7 +110,7 @@ const App = () => {
       <Filter handleSearchChange={handleSearchChange} value={newSearch}></Filter>
       <div>
         {filteredPhone.map(person => 
-          <Person key={person.id} person={person} deletePhone={()=> deletePhone(person.id)}></Person>
+          <Person key={person.id} person={person} deletePhone={()=> deleteContact(person.id)}></Person>
         )}
       </div>
     </div>
