@@ -39,7 +39,9 @@ const App = () => {
           setNewPhone('')
         })
     }else{
-      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+      const dialogMessage = `${newName} is already added to phonebook, ` + 
+      'replace the old number with a new one?'
+      if(dialogWindowResponse(dialogMessage)){
         const updatedUser = {...filterListByName[0], number:newPhone}
         phonebookService
           .updateContact(updatedUser.id, updatedUser)
@@ -51,13 +53,6 @@ const App = () => {
           })
       }
     }
-  }
-
-  const showNotification = (notification) => {
-    setNotification(notification)
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
   }
 
   const handleNameChange = (event) => {
@@ -73,7 +68,7 @@ const App = () => {
   }
 
   const deleteContact = (id) =>{
-    if(window.confirm("Are you sure you want to delete?")){
+    if(dialogWindowResponse("Are you sure you want to delete?")){
       phonebookService
         .removeContact(id)
         .then(response =>{
@@ -96,6 +91,17 @@ const App = () => {
     newSearch.length >= 1? 
     persons.filter(x => x.name.toLowerCase().includes(newSearch.toLowerCase())) :
     persons;
+
+  const showNotification = (notification) => {
+    setNotification(notification)
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+
+  const dialogWindowResponse = (message) => {
+    return window.confirm(message);
+  }
 
   return (
     <div style={{paddingLeft: '50px'}}>
