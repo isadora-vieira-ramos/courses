@@ -21,4 +21,4 @@ const removeContact = (id) => {
   return request.then(response => response.data)
 }
 
-export default { getAllContacts: getAllContacts, createContact: createContact, updateContact: updateContact, remove: removeContact }
+export default { getAllContacts: getAllContacts, createContact: createContact, updateContact: updateContact, removeContact: removeContact }
