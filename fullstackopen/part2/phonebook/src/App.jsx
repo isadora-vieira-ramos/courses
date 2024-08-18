@@ -77,8 +77,10 @@ const App = () => {
           })
         })
         .catch(error=> {
+          console.log('teste');
           setError(true)
-          showNotification(`This information has already been deleted, try refresh the page`)
+          //showNotification(`This information has already been deleted, try refresh the page`)
+          showNotification(error.response.data.error)
             setTimeout(() => {
               setNotification(null)
               setError(false)
